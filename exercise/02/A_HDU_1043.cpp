@@ -1,5 +1,5 @@
 /* https://acm.hdu.edu.cn/showproblem.php?pid=1043 */
-/* oj暂时提交不上 */
+/* AC, 用C++编译器提交正常，G++就运行异常 */
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -7,14 +7,7 @@
 const int MAX_N = 20;
 const int MAX_M = 362880 + 10;
 
-struct step_node_t
-{
-    int pre;
-    char pre_operation;
-    unsigned char x_index;
-};
-
-int64_t factorial[MAX_N];
+const int64_t factorial[MAX_N] = {1, 1, 2, 6, 24, 120, 720, 5040, 40320, 362880, 3628800};
 
 int64_t contor_expansion(unsigned char sequence[], int len)
 {
@@ -57,9 +50,16 @@ void reverse_contor_expansion(int64_t position, int len, unsigned char sequence[
     }
 }
 
+struct step_node_t
+{
+    int pre;
+    char pre_operation;
+    unsigned char x_index;
+};
+
 step_node_t step[MAX_M];
 
-int bfs()
+void bfs()
 {
     unsigned char sequ_buff[MAX_N];
     int32_t que[MAX_M];
@@ -153,49 +153,59 @@ int bfs()
 int main()
 {
     unsigned char start[MAX_N];
+	char str[50];
     int operation_len;
     char input;
 
-    factorial[0] = 1;
-    for(int i = 1; i < 15; i++)
-    {
-        factorial[i] = factorial[i - 1] * i;
-    }
     bfs();
+    // for(int i = 0; i <= factorial[9]; i++)
+    // {
+    //     int pos = i;
+    //     if(step[pos].pre_operation == -1)
+    //     {
+    //         printf("unsolvable\n");
+    //     }
+    //     else
+    //     {
+    //         while (pos > 0)
+    //         {
+    //             printf("%c", step[pos].pre_operation);
+    //             pos = step[pos].pre;
+    //         }
+    //         printf("\n");
+    //     }
+    // }
 
-    while (true)
+	while(fgets(str, 50, stdin) != NULL)
     {
-        for(int i = 0; i < 9; i++)
-        {
-            while((input = getchar()) != EOF)
-            {
-                if(input == 'x')
-                {
-                    start[i] = 9;
-                    break;
-                }
-                else if(input >= '1' && input <= '9')
-                {
-                    start[i] = input - '0';
-                    break;
-                }
-            }
-            if(input == EOF)
-            {
-                return 0;
-            }
-        }
+		int len = strlen(str);
+		for(int i = 0, j = 0; i < len && j < 9; i++)
+		{
+			if(str[i] == 'x')
+			{
+				start[j] = 9;
+				j++;
+			}
+			if(str[i] >= '1' && str[i] <= '8')
+			{
+				start[j] = (int)(str[i] - '0');
+				j++;
+			}
+		}
+
         int pos = contor_expansion(start, 9);
         if(step[pos].pre_operation == -1)
         {
-            printf("unsolved");
+            printf("unsolvable\n");
         }
-        while (pos > 0)
+        else
         {
-            printf("%c", step[pos].pre_operation);
-            pos = step[pos].pre;
+            for(int i = pos; i > 0; i = step[i].pre)
+            {
+                printf("%c", step[i].pre_operation);
+            }
+            printf("\n");
         }
-        printf("\n");
     }
 
     return 0;
