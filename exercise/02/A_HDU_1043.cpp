@@ -1,5 +1,5 @@
 /* https://acm.hdu.edu.cn/showproblem.php?pid=1043 */
-/* AC, 用C++编译器提交正常，G++就运行异常 */
+/* AC */
 #include <stdio.h>
 #include <string.h>
 #include <stdint.h>
@@ -80,7 +80,7 @@ void bfs()
             unsigned char temp_slid = sequ_buff[exchange_index];
             sequ_buff[exchange_index] = 9;
             sequ_buff[temp.x_index] = temp_slid;
-            int pos = contor_expansion(sequ_buff, 9);
+            int64_t pos = contor_expansion(sequ_buff, 9);
             sequ_buff[exchange_index] = temp_slid;
             sequ_buff[temp.x_index] = 9;
             if(step[pos].pre_operation == -1)
@@ -98,7 +98,7 @@ void bfs()
             unsigned char temp_slid = sequ_buff[exchange_index];
             sequ_buff[exchange_index] = 9;
             sequ_buff[temp.x_index] = temp_slid;
-            int pos = contor_expansion(sequ_buff, 9);
+            int64_t pos = contor_expansion(sequ_buff, 9);
             sequ_buff[exchange_index] = temp_slid;
             sequ_buff[temp.x_index] = 9;
             if(step[pos].pre_operation == -1)
@@ -116,7 +116,7 @@ void bfs()
             unsigned char temp_slid = sequ_buff[exchange_index];
             sequ_buff[exchange_index] = 9;
             sequ_buff[temp.x_index] = temp_slid;
-            int pos = contor_expansion(sequ_buff, 9);
+            int64_t pos = contor_expansion(sequ_buff, 9);
             sequ_buff[exchange_index] = temp_slid;
             sequ_buff[temp.x_index] = 9;
             if(step[pos].pre_operation == -1)
@@ -134,7 +134,7 @@ void bfs()
             unsigned char temp_slid = sequ_buff[exchange_index];
             sequ_buff[exchange_index] = 9;
             sequ_buff[temp.x_index] = temp_slid;
-            int pos = contor_expansion(sequ_buff, 9);
+            int64_t pos = contor_expansion(sequ_buff, 9);
             sequ_buff[exchange_index] = temp_slid;
             sequ_buff[temp.x_index] = 9;
             if(step[pos].pre_operation == -1)
@@ -193,14 +193,14 @@ int main()
 			}
 		}
 
-        int pos = contor_expansion(start, 9);
+        int64_t pos = contor_expansion(start, 9);
         if(step[pos].pre_operation == -1)
         {
             printf("unsolvable\n");
         }
         else
         {
-            for(int i = pos; i > 0; i = step[i].pre)
+            for(int64_t i = pos; i > 0; i = step[i].pre)
             {
                 printf("%c", step[i].pre_operation);
             }
