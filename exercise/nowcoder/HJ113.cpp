@@ -6,7 +6,7 @@
 
 const int MAX_N = 1e5 + 10;
 const uint64_t MOD = 1e9 + 7;
-const int MAX_LOOP = 32;
+const int MAX_LOOP = 30;
 
 uint64_t fast_power(uint64_t a, uint64_t b)
 {
@@ -91,13 +91,11 @@ int main()
     ans = 0;
     for (int i = 0; i < n; i++)
     {
-        uint64_t exp = 0;
         for(int j = 0; j <= loop; j++)
         {
-            exp = (exp + prob[j] * num[i]) % MOD;
-            num[i] = (num[i] + (num[i] & m)) % MOD;
+            ans = (ans + prob[j] * num[i]) % MOD;
+            num[i] = num[i] + (num[i] & m);
         }
-        ans = (ans + exp) % MOD;
     }
 
     printf("%llu\n", ans);
