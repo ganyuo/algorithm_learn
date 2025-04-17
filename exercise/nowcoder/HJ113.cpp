@@ -95,7 +95,7 @@ int main()
         for(int j = 0; j <= loop; j++)
         {
             exp = (exp + prob[j] * num[i]) % MOD;
-            num[i] = (num[i] + (num[i] % m)) % MOD;
+            num[i] = (num[i] + (num[i] & m)) % MOD;
         }
         ans = (ans + exp) % MOD;
     }
