@@ -2,33 +2,26 @@
 #include <string.h>
 #include <stdint.h>
 
-const int MAXN = 100 + 10;
-const int MAXM = 60000 + 10;
-
-struct edge_t
-{
-    int s, d;
-};
-
+const int MAX_N = 100 + 10;
+const int MAX_M = 6e4 + 10;
 
 int n, ans;
-int num[MAXN];
-bool visit[MAXN];
-bool prime[MAXM];
-int en;
-edge_t edge[MAXN * MAXN];
-// bool map[MAXN][MAXN];
+int num[MAX_N];
+bool prime[MAX_M];
+bool visit[MAX_N];
+int match[MAX_N];
+bool map[MAX_N][MAX_N];
 
 void init_prime()
 {
-    memset(prime, true, MAXM);
+    memset(prime, true, MAX_M);
     prime[0] = false;
     prime[1] = false;
-    for(uint64_t i = 2; i < MAXM; i++)
+    for(uint64_t i = 2; i < MAX_M; i++)
     {
         if(prime[i] == true)
         {
-            for(uint64_t j = i * i; j < MAXM; j += i)
+            for(uint64_t j = i * i; j < MAX_M; j += i)
             {
                 prime[j] = false;
             }
@@ -36,24 +29,22 @@ void init_prime()
     }
 }
 
-void dfs(int inds, int pn)
+bool dfs(int s)
 {
-    if(pn > ans)
+    for(int i = 0; i < n; i++)
     {
-        ans = pn;
-    }
-    for(int i = inds; i < en; i++)
-    {
-        if(visit[edge[i].s] == true || visit[edge[i].d] == true)
+        if(visit[i] == false && map[s][i] == true)
         {
-            continue;
+            visit[i] = true;
+            if(match[i] < 0 || dfs(match[i]))
+            {
+                match[s] = i;
+                match[i] = s;
+                return true;
+            }
         }
-        visit[edge[i].s] = true;
-        visit[edge[i].d] = true;
-        dfs(i + 1, pn + 1);
-        visit[edge[i].s] = false;
-        visit[edge[i].d] = false;
     }
+    return false;
 }
 
 int main()
@@ -64,49 +55,29 @@ int main()
     {
         scanf("%d", &num[i]);
     }
-    // memset(map, false, sizeof(map));
-    en = 0;
+    memset(map, false, sizeof(map));
     for(int i = 0; i < n; i++)
     {
         for(int j = i + 1; j < n; j++)
         {
             if(prime[num[i] + num[j]] == true)
             {
-                edge[en].s = i;
-                edge[en].d = j;
-                en++;
-                // map[i][j] = true;
-                // map[j][i] = true;
+                map[i][j] = true;
+                map[j][i] = true;
             }
         }
     }
-    // printf("00: ");
-    // for(int i = 0; i < n; i++)
-    // {
-    //     printf("%-3d", i);
-    // }
-    // printf("\n");
-    // for(int i = 0; i < n; i++)
-    // {
-    //     printf("%-2d: ", i);
-    //     for(int j = 0; j < n; j++)
-    //     {
-    //         if(map[i][j] == true)
-    //         {
-    //             printf("1  ");
-    //         }
-    //         else
-    //         {
-    //             printf("0  ");
-    //         }
-    //     }
-    //     printf("\n");
-    // }
 
     ans = 0;
-    memset(visit, false, sizeof(visit));
-    dfs(0, 0);
-
+    memset(match, -1, sizeof(match));
+    for(int i = 0; i < n; i++)
+    {
+        memset(visit, false, sizeof(visit));
+        if((num[i] & 1) && dfs(i) == true)
+        {
+            ans++;
+        }
+    }
     printf("%d\n", ans);
 
     return 0;
