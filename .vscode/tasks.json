@@ -5,7 +5,7 @@
 	"tasks": [
 		{
 			"type": "shell",
-			"label": "g++ build active file",
+			"label": "g++ build",
 			"command": "/usr/bin/g++",
 			"args": [
 				"-g",
@@ -14,7 +14,7 @@
 				"${workspaceFolder}/.vscode/a.out"
 			],
 			"options": {
-				"cwd": "/usr/bin"
+				"cwd": "${fileDirname}"
 			},
 			"problemMatcher": [
 				"$gcc"
