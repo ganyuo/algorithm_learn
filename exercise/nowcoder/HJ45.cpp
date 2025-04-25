@@ -13,7 +13,7 @@ int main()
     scanf("%d\n", &t);
     while(t--)
     {
-        scanf("%s" str);
+        scanf("%s", str);
         int len = strlen(str);
         memset(count, 0, sizeof(count));
         for(int i = 0; i < len; i++)
@@ -22,7 +22,7 @@ int main()
         }
         std::sort(count, count + 26);
         int ans = 0;
-        for(int i = 25; i >= 0; i++)
+        for(int i = 25; i >= 0; i--)
         {
             if(count[i] <= 0)
             {
